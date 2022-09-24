@@ -501,7 +501,7 @@ kill(int pid)
 // Runs when user types ^P on console.
 // No lock to avoid wedging a stuck machine further.
 void
-procdump(void)
+xprocdump(void)					//modif rajout du x
 {
   static char *states[] = {
   [UNUSED]    "unused",
@@ -532,3 +532,4 @@ procdump(void)
     cprintf("\n");
   }
 }
+

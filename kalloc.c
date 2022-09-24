@@ -94,3 +94,21 @@ kalloc(void)
   return (char*)r;
 }
 
+void procdump(void)
+{
+struct run *r;
+
+r= kmem.freelist;
+if (r==0)
+	return;
+for (int i=0;r!=0;i++)
+{
+if (i%10 == 0)
+cprintf("\n");
+if (!r)
+	return;
+cprintf("[%d-->%x]  ",i,r);
+r = r->next;
+}
+}
+

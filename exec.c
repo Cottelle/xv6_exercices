@@ -7,6 +7,8 @@
 #include "x86.h"
 #include "elf.h"
 
+extern void printpgdir(pde_t *pgdir);
+
 int
 exec(char *path, char **argv)
 {
@@ -101,6 +103,7 @@ exec(char *path, char **argv)
   curproc->tf->esp = sp;
   switchuvm(curproc);
   freevm(oldpgdir);
+  printpgdir(pgdir);
   return 0;
 
  bad:
