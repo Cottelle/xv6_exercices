@@ -1,0 +1,11 @@
+préprocessor C --> cpp usys.S : fichier apres expension des macros
+
+pour ajouter une primitive syssteme :
+    sysfile.c : sys_lseek
+    syscall.s : le tableau des syscall 
+    usys.S : les fonctions utilisateur en assembleur
+    user.h : le prototype de la fonction utilisateur pour les utilisées
+
+    off__t non POSIX -> int
+
+    fctnl.h permet de def des macro pour l'utilisateur

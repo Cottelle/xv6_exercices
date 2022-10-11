@@ -103,6 +103,18 @@ sys_close(void)
   return 0;
 }
 
+int sys_lseek()
+{
+  struct file *f;
+  int o,w;
+
+  if(argfd(0, 0, &f) < 0 || argint(1, &o) < 0 || argint(2, &w) < 0)
+    return -1;
+  
+  return filelseek(f,o,w);
+  
+}
+
 int
 sys_fstat(void)
 {
