@@ -89,3 +89,12 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+
+int sys_getrusage(void)
+{
+  struct rusage *r;
+  if (argptr(0,(char **)&r,sizeof(r))>0)
+    return -1;
+  return getrusage(r);
+}
