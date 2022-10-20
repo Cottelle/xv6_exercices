@@ -15,13 +15,13 @@ main(int argc, char *argv[])
 
   if(argc != 4){
     printf(2, "usage: testlseek file o n\n");
-    exit();
+    exit(0);
   }
 
   fd = open (argv [1], O_RDONLY) ;
   if(fd == -1) {
     printf(2, "testlseek: cannot open %s\n", argv[1]);
-    exit();
+    exit(0);
   }
   o = atoi (argv [2]) ;
   n = atoi (argv [3]) ;
@@ -29,7 +29,7 @@ main(int argc, char *argv[])
   if (lseek (fd, o, ref) < 0) {
     printf(2, "testlseek: cannot lseek %d from %s\n", o,
 	(ref == SEEK_SET) ? "SEEK_SET" : "SEEK_END");
-    exit();
+    exit(0);
   }
   printf(2, "testlseek: %s fd=%d o=%d n=%d ref=%d\n", argv[1],fd,o,n,ref) ;
   while (n > 0 && (r = read (fd, buf, MIN (n, sizeof buf))) > 0)
@@ -41,8 +41,8 @@ main(int argc, char *argv[])
 //     printf(2,"Error");
   if (close (fd) == -1) {
     printf(2, "testlseek: cannot close %s\n", argv[1]);
-    exit();
+    exit(0);
   }
-  exit();
+  exit(0);
 
 }
