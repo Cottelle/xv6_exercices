@@ -1,11 +1,15 @@
-#include "defs.h"
 #include "types.h"
+#include "defs.h"
+#include "param.h"
+#include "traps.h"
 #include "spinlock.h"
 #include "sleeplock.h"
 #include "fs.h"
 #include "file.h"
+#include "memlayout.h"
+#include "mmu.h"
 #include "proc.h"
-#include "string.h"
+#include "x86.h"
 
 // static struct
 // {
@@ -13,7 +17,7 @@
 //     int locking;
 // } drv;
 
-extern pde_t *walkpgdir(pde_t *pgdir, const void *va, int alloc);
+// extern pde_t *walkpgdir(pde_t *pgdir, const void *va, int alloc);
 
 int drvmemread(struct inode *ip, char *dst, int n, unsigned int off)
 {
@@ -28,11 +32,18 @@ int drvmemread(struct inode *ip, char *dst, int n, unsigned int off)
         return n;
 
     case 2:
-        struct proc *p = myproc();
-        pde_t *pde_t,*pgdir = p->pgdir;
+        // unsigned int = of = ip->
+        // struct proc *p = myproc();
+        // pde_t *pde_t,*pgdir = p->pgdir;
+        cprintf("\n okici %d %d %d\n",off,PHYSTOP,EXTMEM);
 
-        if ((pde_t=walkpgdir(pgdir,off,0)<0)
-            pann
+        if (off+n>PHYSTOP ||off<EXTMEM)
+            return -1;
+
+        memmove(dst,(char *)P2V(off),n);
+
+        return n;
+        
 
 
 

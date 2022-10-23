@@ -173,11 +173,8 @@ int filelseek(struct file *f, unsigned int offset, int wehence)
   #if 0
   else if (wehence == SEEK_END)
     newoff = f->ip->size;
-  newoff += offset;
   #endif
-  else
-    cprintf("Pas implementé n");
-
+  newoff += offset;
   if (newoff > f->ip->size && f->ip->type!=T_DEV)
     return -1;
   iunlock(f->ip);

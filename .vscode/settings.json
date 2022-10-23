@@ -11,6 +11,8 @@
         "memlayout.h": "c",
         "mmu.h": "c",
         "proc.h": "c",
-        "x86.h": "c"
+        "x86.h": "c",
+        "string.h": "c",
+        "new": "c"
     }
 }
