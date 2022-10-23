@@ -6,6 +6,7 @@
 #include "proc.h"
 #include "x86.h"
 
+
 static void startothers(void);
 static void mpmain(void)  __attribute__((noreturn));
 extern pde_t *kpgdir;
@@ -25,6 +26,7 @@ main(void)
   picinit();       // disable pic
   ioapicinit();    // another interrupt controller
   consoleinit();   // console hardware
+  drvmeminit();     //DEVNULL
   uartinit();      // serial port
   pinit();         // process table
   tvinit();        // trap vectors

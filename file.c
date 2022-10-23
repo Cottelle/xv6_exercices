@@ -11,6 +11,8 @@
 #include "file.h"
 #include "fcntl.h"
 
+#include "stat.h"
+
 struct devsw devsw[NDEV];
 struct
 {
@@ -160,19 +162,23 @@ int filewrite(struct file *f, char *addr, int n)
   panic("filewrite");
 }
 
-int filelseek(struct file *f, int offset, int wehence)
+int filelseek(struct file *f, unsigned int offset, int wehence)
 {
-  if (!f->ip)
+  if (f->type!=FD_INODE)
     return -1;
-  int newoff = f->off;
-  ilock(f->ip);             //lock la size pour eviter quelle change
+  int newoff;
+  ilock(f->ip);             //lock la size pour eviter qu'elle change
   if (wehence == SEEK_SET)
     newoff = 0;
+  #if 0
   else if (wehence == SEEK_END)
     newoff = f->ip->size;
   newoff += offset;
+  #endif
+  else
+    cprintf("Pas implementé n");
 
-  if (newoff < 0 || newoff > f->ip->size)
+  if (newoff > f->ip->size && f->ip->type!=T_DEV)
     return -1;
   iunlock(f->ip);
   f->off = newoff;

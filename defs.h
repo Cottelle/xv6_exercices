@@ -22,6 +22,11 @@ void            cprintf(char*, ...);
 void            consoleintr(int(*)(void));
 void            panic(char*) __attribute__((noreturn));
 
+
+// drvmem.c
+
+void            drvmeminit(void);
+
 // exec.c
 int             exec(char*, char**);
 
@@ -33,7 +38,7 @@ void            fileinit(void);
 int             fileread(struct file*, char*, int n);
 int             filestat(struct file*, struct stat*);
 int             filewrite(struct file*, char*, int n);
-int             filelseek(struct file*, int,int);
+int             filelseek(struct file*, unsigned int,int);
 
 // fs.c
 void            readsb(int dev, struct superblock *sb);
