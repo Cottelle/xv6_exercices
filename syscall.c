@@ -7,6 +7,8 @@
 #include "x86.h"
 #include "syscall.h"
 
+#include "date.h"
+
 // User code makes a system call with INT T_SYSCALL.
 // System call number in %eax.
 // Arguments on the stack, from the user call to the C
@@ -105,6 +107,7 @@ extern int sys_write(void);
 extern int sys_uptime(void);
 
 extern int sys_lseek(void);
+extern int sys_getdate(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -129,6 +132,7 @@ static int (*syscalls[])(void) = {
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
 [SYS_lseek]   sys_lseek,
+[SYS_getdate] sys_getdate,
 };
 
 void

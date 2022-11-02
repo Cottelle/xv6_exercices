@@ -181,6 +181,7 @@ UPROGS=\
 	_usertests\
 	_wc\
 	_zombie\
+	_date\
 	# _testlseek\
 	
 fs.img: mkfs README $(UPROGS)
