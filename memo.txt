@@ -9,3 +9,11 @@ pour ajouter une primitive syssteme :
     off__t non POSIX -> int
 
     fctnl.h permet de def des macro pour l'utilisateur
+
+
+
+-------------------------------
+pthread 
+
+la struct proc a été modifié en rajoutant pthrad[5] mais exec ne marche pas. Pour l'insant juste un seul thread qui remplace une patrtie du processus)
+J'ai enlevé if curproc = iunit panic pour plus de clareter mais ne marche pas exec echoue donc pas initproc exit() -->erruer

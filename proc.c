@@ -231,8 +231,8 @@ exit(void)
   struct proc *p;
   int fd;
 
-  if(curproc == initproc)
-    panic("init exiting");
+  // if(curproc == initproc)
+  //   panic("init exiting");
 
   // Close all open files.
   for(fd = 0; fd < NOFILE; fd++){
