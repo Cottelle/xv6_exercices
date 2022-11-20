@@ -9,3 +9,5 @@ pour ajouter une primitive syssteme :
     off__t non POSIX -> int
 
     fctnl.h permet de def des macro pour l'utilisateur
+
+    tf->cs&3 si mde utilisateur mode noay usinon 
