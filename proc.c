@@ -143,6 +143,7 @@ void userinit(void)
 
   p->prio = 1; // Set normal priority for the fisrt process and so for the classique child (sh for exemple)
   p->last = 0;
+  p->cons = 0;
 
   safestrcpy(p->name, "initcode", sizeof(p->name));
   p->cwd = namei("/");
@@ -208,6 +209,7 @@ int fork(void)
   np->parent = curproc;
   np->prio = curproc->prio; // Set the same priority like the father
   np->last = curproc->last; // The childs have the same priority of the father at this time (not 0 )
+  np->cons = 0;
   *np->tf = *curproc->tf;
 
   // Clear %eax so that fork returns 0 in the child.
@@ -329,13 +331,22 @@ int wait(void)
 
 struct proc *selproc(int prio)
 {
-  unsigned int minlast = -1, find = 0;
+  unsigned int min = -1, find = 0;
   struct proc *p, *pfind;
   for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
   {
-    if (p->state != RUNNABLE || p->prio != prio || p->last > minlast)
+    if (p->state != RUNNABLE || p->prio != prio)
       continue;
-    minlast = p->last;
+    if (prio == 3)
+    {
+      if (p->cons > min)
+        continue;
+      min = p->cons;
+    pfind = p;
+    find = 1;
+    }
+    else if(p->last<=min)
+    min = p->last;
     pfind = p;
     find = 1;
   }
@@ -365,20 +376,26 @@ void scheduler(void)
 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
+    int tabprio[] = {1,3, 0, 3};
     for (int i = 0; i < 4; i++)
     {
-      p = selproc(i);
+      p = selproc(tabprio[i]);
       if (p)
         break;
     }
+    if (!p)
+    {
+      release(&ptable.lock);
+      continue;
+    }
 
     c->proc = p;
-    
+
+    switchuvm(p);
+
     acquire(&tickslock);
     p->last = ticks;
     release(&tickslock);
-
-    switchuvm(p);
     p->state = RUNNING;
 
     swtch(&(c->scheduler), p->context);
@@ -494,7 +511,10 @@ wakeup1(void *chan)
 
   for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
     if (p->state == SLEEPING && p->chan == chan)
+    {
       p->state = RUNNABLE;
+      // swtch(&myproc()->context,p->context);   ???
+    }
 }
 
 // Wake up all processes sleeping on chan.
@@ -572,7 +592,7 @@ void procdump(void)
   for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
   {
     if (p->state != UNUSED && p->state != EMBRYO)
-      cprintf("prio of %d:%d \n", p->pid, p->prio);
+      cprintf("%d:%d prio %d cons\n", p->pid, p->prio, p->cons);
   }
 }
 
@@ -601,4 +621,15 @@ int setprio(int value, int pid)
   }
   release(&ptable.lock);
   return -1;
+}
+
+void divcons(void)
+{
+  acquire(&ptable.lock);
+  for (struct proc *p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+  {
+    if (p && p != UNUSED)
+      p->cons = p->cons >> 1;
+  }
+  release(&ptable.lock);
 }

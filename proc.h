@@ -52,6 +52,7 @@ struct proc {
 
   int prio;                    //The priority of the proces 
   unsigned int last;                    //The tick when th process was up
+  unsigned int cons;          //The consomation of th process
 };
 
 // Process memory is laid out contiguously, low addresses first:

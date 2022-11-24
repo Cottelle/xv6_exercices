@@ -122,6 +122,7 @@ void            wakeup(void*);
 void            yield(void);
 
 int             setprio(int,int);
+void            divcons(void);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

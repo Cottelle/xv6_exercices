@@ -103,6 +103,7 @@ exec(char *path, char **argv)
   curproc->tf->esp = sp;
   curproc->prio = PRIO_RT;  //The normal prioruty for new process
   curproc->last = 0;
+  curproc->cons=0;
   switchuvm(curproc);
   freevm(oldpgdir);
   return 0;
