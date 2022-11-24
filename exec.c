@@ -7,6 +7,8 @@
 #include "x86.h"
 #include "elf.h"
 
+#include "prio.h"
+
 int
 exec(char *path, char **argv)
 {
@@ -99,6 +101,8 @@ exec(char *path, char **argv)
   curproc->sz = sz;
   curproc->tf->eip = elf.entry;  // main
   curproc->tf->esp = sp;
+  curproc->prio = PRIO_RT;  //The normal prioruty for new process
+  curproc->last = 0;
   switchuvm(curproc);
   freevm(oldpgdir);
   return 0;

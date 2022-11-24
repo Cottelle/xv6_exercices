@@ -77,6 +77,9 @@ trap(struct trapframe *tf)
             cpuid(), tf->cs, tf->eip);
     lapiceoi();
     break;
+  case IRQ_IDE:
+    cprintf("???IRQ_IDE\n");
+    break;
 
   //PAGEBREAK: 13
   default:
