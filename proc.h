@@ -1,3 +1,5 @@
+#include "resource.h"
+
 // Per-CPU state
 struct cpu {
   uchar apicid;                // Local APIC ID
@@ -49,6 +51,10 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+
+  int exit;                    // the exit number (init at -1)
+  struct rusage my_rusage;     // the resource of the current proc
+  struct rusage des_rusage;    //the ressource of the proc's descent 
 };
 
 // Process memory is laid out contiguously, low addresses first:

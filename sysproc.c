@@ -7,6 +7,8 @@
 #include "mmu.h"
 #include "proc.h"
 
+
+
 int
 sys_fork(void)
 {
@@ -16,14 +18,21 @@ sys_fork(void)
 int
 sys_exit(void)
 {
-  exit();
+  int n;
+  if (argint(0,&n)<0)
+    return -1;
+
+  exit(n);
   return 0;  // not reached
 }
 
 int
 sys_wait(void)
 {
-  return wait();
+  int *n;
+  if(argptr(0,(char **)&n,sizeof(int))<0)
+    return -1;
+  return wait(n);
 }
 
 int
@@ -88,4 +97,12 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+
+int sys_getrusage(void)
+{
+  struct rusage *r;
+  if (argptr(0,(char **)&r,sizeof(*r))<0)
+    return -1;
+  return getrusage(r);
 }
