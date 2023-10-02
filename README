@@ -1,3 +1,9 @@
+It is the respository of xv6 exercices from Pierre David lessons, the initial code is the code of xv6 (the branch maaster) which are the README here :
+
+
+
+
+
 NOTE: we have stopped maintaining the x86 version of xv6, and switched
 our efforts to the RISC-V version
 (https://github.com/mit-pdos/xv6-riscv.git)
